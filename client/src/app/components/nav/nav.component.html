@@ -2,8 +2,8 @@
   <div class="container">
     <a class="navbar-brand" routerLink="/" routerLinkActive="active">Dating App</a>
 
-    @if (accountService.currentUser(); as user) {
-      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+      @if (accountService.currentUser(); as user) {
         <li class="nav-item">
           <a class="nav-link" routerLink="/members" routerLinkActive="active">Matches</a>
         </li>
@@ -13,8 +13,13 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
         </li>
-      </ul>
+      }
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/errors" routerLinkActive="active">Errors</a>
+      </li>
+    </ul>
 
+    @if (accountService.currentUser(); as user) {
       <div dropdown class="dropdown">
         <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">{{ "Welcome " + (user.username | titlecase) }}</a>
         <div *dropdownMenu class="dropdown-menu">
