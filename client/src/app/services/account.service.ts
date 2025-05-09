@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { IUser } from '../models/user.model';
 import { catchError, EMPTY, map, Observable, of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,8 @@ import { catchError, EMPTY, map, Observable, of } from 'rxjs';
 export class AccountService {
 
   private http = inject(HttpClient);
+  private toastr = inject(ToastrService);
+
   baseUrl = "https://localhost:5001/api";
   currentUser = signal<IUser | null>(null);
 
@@ -22,7 +25,7 @@ export class AccountService {
         return user;
       }),
       catchError(e => {
-        console.log(e);
+        this.toastr.error(e.error)
         return EMPTY;
       })
     );
@@ -38,7 +41,7 @@ export class AccountService {
         return user;
       }),
       catchError(e => {
-        console.log(e);
+        this.toastr.error(e.error)
         return EMPTY;
       })
     );
