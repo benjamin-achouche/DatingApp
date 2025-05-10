@@ -24,10 +24,6 @@ export class AccountService {
         }
         return user;
       }),
-      catchError(e => {
-        this.toastr.error(e.error)
-        return EMPTY;
-      })
     );
   }
   
@@ -40,10 +36,6 @@ export class AccountService {
         }
         return user;
       }),
-      catchError(e => {
-        this.toastr.error(e.error)
-        return EMPTY;
-      })
     );
   }
   
