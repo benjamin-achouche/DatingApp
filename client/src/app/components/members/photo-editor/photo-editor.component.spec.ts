@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MemberDetailComponent } from './member-detail.component';
+import { PhotoEditorComponent } from './photo-editor.component';
 
-describe('MemberDetailComponent', () => {
-  let component: MemberDetailComponent;
-  let fixture: ComponentFixture<MemberDetailComponent>;
+describe('PhotoEditorComponent', () => {
+  let component: PhotoEditorComponent;
+  let fixture: ComponentFixture<PhotoEditorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MemberDetailComponent]
+      imports: [PhotoEditorComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(MemberDetailComponent);
+    fixture = TestBed.createComponent(PhotoEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
