@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { IUser } from '../models/user.model';
-import { catchError, EMPTY, map, Observable, of } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { map, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 export class AccountService {
 
   private http = inject(HttpClient);
-  private toastr = inject(ToastrService);
 
-  baseUrl = "https://localhost:5001/api";
+  baseUrl = environment.apiUrl;
   currentUser = signal<IUser | null>(null);
 
   register(model: any): Observable<IUser> {
