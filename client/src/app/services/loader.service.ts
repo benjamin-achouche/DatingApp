@@ -14,7 +14,7 @@ export class LoaderService {
     this.spinnerService.show(undefined, {
       type: 'line-scale-party',
       bdColor: 'transparent',
-      color: '#333'
+      color: '#999'
     })
   }
 

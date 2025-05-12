@@ -10,11 +10,12 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { preventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
+import { memberDetailedResolver } from './resolvers/member-detailed.resolver';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'members', component: MembersListComponent, canActivate: [authGuard] },
-  { path: 'members/:username', component: MemberDetailComponent, canActivate: [authGuard] },
+  { path: 'members/:username', component: MemberDetailComponent, canActivate: [authGuard], resolve: { member: memberDetailedResolver } },
   { path: 'member/edit', component: MemberEditComponent, canActivate: [authGuard], canDeactivate: [preventUnsavedChangesGuard] },
   { path: 'lists', component: ListsComponent, canActivate: [authGuard] },
   { path: 'messages', component: MessagesComponent, canActivate: [authGuard] },
