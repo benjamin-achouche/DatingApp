@@ -1,10 +1,10 @@
 import {Component, OnInit, inject, input, output} from '@angular/core';
-import { Member } from '../../../models/member.model';
+import { IMember } from '../../../models/member.model';
 import { DecimalPipe, NgClass, NgStyle } from '@angular/common';
 import { FileUploadModule, FileUploader } from 'ng2-file-upload';
 import { AccountService } from '../../../services/account.service';
 import { environment } from '../../../../environments/environment';
-import { Photo } from '../../../models/photo.model';
+import { IPhoto } from '../../../models/photo.model';
 import { MembersService } from '../../../services/members.service';
 
 @Component({
@@ -16,12 +16,12 @@ import { MembersService } from '../../../services/members.service';
 })
 export class PhotoEditorComponent implements OnInit {
   private accountService = inject(AccountService);
-  private memberService = inject(MembersService);
-  member = input.required<Member>();
+  private membersService = inject(MembersService);
+  member = input.required<IMember>();
   uploader?: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
-  memberChange = output<Member>();
+  memberChange = output<IMember>();
 
   ngOnInit(): void {
     this.initializeUploader();
@@ -31,8 +31,8 @@ export class PhotoEditorComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
 
-  deletePhoto(photo: Photo) {
-    this.memberService.deletePhoto(photo).subscribe({
+  deletePhoto(photo: IPhoto) {
+    this.membersService.deletePhoto(photo).subscribe({
       next: _ => {
         const updatedMember = {...this.member()};
         updatedMember.photos = updatedMember.photos.filter(x => x.id !== photo.id);
@@ -41,8 +41,8 @@ export class PhotoEditorComponent implements OnInit {
     })
   }
 
-  setMainPhoto(photo: Photo) {
-    this.memberService.setMainPhoto(photo).subscribe({
+  setMainPhoto(photo: IPhoto) {
+    this.membersService.setMainPhoto(photo).subscribe({
       next: _ => {
         const user = this.accountService.currentUser();
         if (user) {

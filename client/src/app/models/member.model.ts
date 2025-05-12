@@ -1,6 +1,6 @@
-import { Photo } from "./photo.model"
+import { IPhoto } from "./photo.model"
 
-export interface Member {
+export interface IMember {
     id: number
     username: string
     age: number
@@ -14,5 +14,5 @@ export interface Member {
     lookingFor: string
     city: string
     country: string
-    photos: Photo[]
+    photos: IPhoto[]
   }

@@ -1,16 +1,18 @@
 import { Component, HostListener, OnInit, ViewChild, inject } from '@angular/core';
-import { Member } from '../../../models/member.model';
+import { IMember } from '../../../models/member.model';
 import { AccountService } from '../../../services/account.service';
 import { MembersService } from '../../../services/members.service';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
+import { TimeagoModule } from 'ngx-timeago';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-member-edit',
   standalone: true,
-  imports: [TabsModule, FormsModule, PhotoEditorComponent, PhotoEditorComponent],
+  imports: [TabsModule, FormsModule, PhotoEditorComponent, TimeagoModule, DatePipe],
   templateUrl: './member-edit.component.html',
   styleUrl: './member-edit.component.scss'
 })
@@ -22,9 +24,9 @@ export class MemberEditComponent implements OnInit {
     }
   }
 
-  member?: Member;
+  member?: IMember;
   private accountService = inject(AccountService);
-  private memberService = inject(MembersService);
+  private membersService = inject(MembersService);
   private toastr = inject(ToastrService);
 
   ngOnInit(): void {
@@ -34,13 +36,13 @@ export class MemberEditComponent implements OnInit {
   loadMember() {
     const user = this.accountService.currentUser();
     if (!user) return;
-    this.memberService.getMember(user.username).subscribe({
+    this.membersService.getMember(user.username).subscribe({
       next: member => this.member = member
     })
   }
 
   updateMember() {
-    this.memberService.updateMember(this.editForm?.value).subscribe({
+    this.membersService.updateMember(this.editForm?.value).subscribe({
       next: _ => {
         this.toastr.success('Profile updated successfully');
         this.editForm?.reset(this.member);
@@ -48,7 +50,7 @@ export class MemberEditComponent implements OnInit {
     })
   }
 
-  onMemberChange(event: Member) {
+  onMemberChange(event: IMember) {
     this.member = event;
   }
 }

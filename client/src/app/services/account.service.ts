@@ -3,13 +3,14 @@ import { inject, Injectable, signal } from '@angular/core';
 import { IUser } from '../models/user.model';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { MembersService } from './members.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-
   private http = inject(HttpClient);
+  // membersService = inject(MembersService); // Causes circular dependency
 
   baseUrl = environment.apiUrl;
   currentUser = signal<IUser | null>(null);
@@ -40,6 +41,7 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.currentUser.set(null);
+    // this.membersService.membersList.set(null);
   }
   
 }
