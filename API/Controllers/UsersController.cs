@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -41,7 +40,7 @@ public class UsersController(IUserRepository userRepo, IMapper mapper, IPhotoSer
 
     mapper.Map(memberUpdateDto, user);
 
-    if (await userRepo.SaveAllAsync()) return NoContent();
+    if (await userRepo.SaveChangesAsync()) return NoContent();
 
     return BadRequest("Failed to update the user (or maybe there was no changes?)");
   }
@@ -65,7 +64,7 @@ public class UsersController(IUserRepository userRepo, IMapper mapper, IPhotoSer
 
     user.Photos.Add(photo);
 
-    if (await userRepo.SaveAllAsync()) {
+    if (await userRepo.SaveChangesAsync()) {
       return CreatedAtAction(nameof (GetUser), new { username = user.UserName }, mapper.Map<PhotoDto>(photo));
     }
 
@@ -87,7 +86,7 @@ public class UsersController(IUserRepository userRepo, IMapper mapper, IPhotoSer
     if (currentMain != null) currentMain.IsMain = false;
     photo.IsMain = true;
 
-    if (await userRepo.SaveAllAsync()) return NoContent();
+    if (await userRepo.SaveChangesAsync()) return NoContent();
 
     return BadRequest("Problem setting main photo");
   }
@@ -109,7 +108,7 @@ public class UsersController(IUserRepository userRepo, IMapper mapper, IPhotoSer
 
     user.Photos.Remove(photo);
 
-    if (await userRepo.SaveAllAsync()) return Ok();
+    if (await userRepo.SaveChangesAsync()) return Ok();
 
     return BadRequest("Problem deleting photo");
   }

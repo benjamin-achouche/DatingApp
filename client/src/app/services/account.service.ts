@@ -4,12 +4,14 @@ import { IUser } from '../models/user.model';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { MembersService } from './members.service';
+import { LikesService } from './likes.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   private http = inject(HttpClient);
+  private likesService = inject(LikesService);
   // membersService = inject(MembersService); // Causes circular dependency
 
   baseUrl = environment.apiUrl;
@@ -36,6 +38,7 @@ export class AccountService {
   setCurrentUser(user: IUser) {
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUser.set(user);
+    this.likesService.getLikeIds();
   }
   
   logout() {

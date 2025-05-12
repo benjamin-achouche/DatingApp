@@ -6,8 +6,9 @@ import { Observable, of, tap } from 'rxjs';
 import { IPhoto } from '../models/photo.model';
 import { IList } from '../models/list.model';
 import { IUserParams } from '../models/user-params.model';
-import { mapToUserParams } from '../functions/user-params.mapper';
+import { mapToUserParams } from '../functions/user-params.mappers';
 import { AccountService } from './account.service';
+import { setPagingHeaders, setPagingResponse } from '../functions/helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -28,9 +29,9 @@ export class MembersService {
   getMembers() {
     const response = this.memberCache.get(Object.values(this.userParams()).join("-"))
     
-    if (response) return this.setPagingResponse(response);
+    if (response) return setPagingResponse(response, this.membersList);
     
-    let params = this.setPagingHeaders(this.userParams().pageNumber, this.userParams().pageSize);
+    let params = setPagingHeaders(this.userParams().pageNumber, this.userParams().pageSize);
 
     params = params.append('minAge', this.userParams().minAge);
     params = params.append('maxAge', this.userParams().maxAge);
@@ -39,28 +40,10 @@ export class MembersService {
     
     return this.http.get<IMember[]>(`${this.baseUrl}/users`, { observe: 'response', params }).subscribe({
       next: res => {
-        this.setPagingResponse(res);
+        setPagingResponse(res, this.membersList);
         this.memberCache.set(Object.values(this.userParams()).join('-'), res);
       },
     })
-  }
-
-  private setPagingResponse(res: HttpResponse<IMember[]>) {
-    this.membersList.set({
-      items: res.body as IMember[],
-      paging: JSON.parse(res.headers.get("Pagination")!)
-    })
-  }
-
-  private setPagingHeaders(pageNumber: number, pageSize: number): HttpParams {
-    let params = new HttpParams();
-
-    if (pageNumber && pageSize) {
-      params = params.append('pageNumber', pageNumber);
-      params = params.append('pageSize', pageSize);
-    }
-
-    return params;
   }
 
   getMember(username: string): Observable<IMember> {
